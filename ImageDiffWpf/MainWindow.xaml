@@ -1,0 +1,51 @@
+﻿<Window x:Class="Imagediff.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Imagediff"
+        mc:Ignorable="d"
+        Title="Imagediff">
+    <Window.Resources>
+        <local:Imagediffs x:Key="names">
+            <local:ImagediffViewModel  ImageName="\images\IMG_3681.jpg" AdobeImageName="\images\IMG_3682.jpg" DiffImageName="\images\IMG_3683.jpg" RefImageName="\images\IMG_3684.jpg"/>
+            <local:ImagediffViewModel  ImageName="\images\IMG_3685.jpg" AdobeImageName="\images\IMG_3686.jpg" DiffImageName="\images\IMG_3687.jpg" RefImageName="\images\IMG_3688.jpg"/>
+            <local:ImagediffViewModel  ImageName="\images\IMG_3689.jpg" AdobeImageName="\images\IMG_3690.jpg" DiffImageName="\images\IMG_3691.jpg" RefImageName="\images\IMG_3692.jpg"/>
+        </local:Imagediffs>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontStyle" Value="Italic" />
+        </Style>
+    </Window.Resources>
+    <Grid Grid.Row="1" Grid.Column="0"  x:Name="ListAndImages"  DataContext="{StaticResource names}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="10*"/>
+        </Grid.ColumnDefinitions>
+
+        <ListBox Grid.Column="0" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock>
+                        <TextBlock Text="{Binding Path=ImageName}" />:
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Grid x:Name="Images" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" x:Name="LeftImage" DataContext="{StaticResource names}" Orientation="Vertical">
+                <Button Command="{Binding Path=ToggleLeft}" Content="{Binding Path=LeftToggleButtonName}"></Button>
+                <Image  Source="{Binding Path=LeftImageName}" ></Image>
+            </StackPanel>
+            <StackPanel Grid.Column="1" x:Name="RightImage" DataContext="{StaticResource names}" Orientation="Vertical">
+                <Button Command="{Binding Path=ToggleRight}"  Content="{Binding Path=RightToggleButtonName}"></Button>
+                <Image Source="{Binding Path=RightImageName}" ></Image>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
