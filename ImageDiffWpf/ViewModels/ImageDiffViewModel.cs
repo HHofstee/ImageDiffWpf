@@ -48,6 +48,8 @@ namespace Imagediff
             set
             {
                 image_name = value;
+                if (LeftToggleButtonName == "Image")
+                    LeftImageName = image_name;
                 RaisePropertyChanged("ImageName");
             }
         }
@@ -61,6 +63,8 @@ namespace Imagediff
             set
             {
                 adobe_image_name = value;
+                if (RightToggleButtonName == "Adobe")
+                    RightImageName = adobe_image_name;
                 RaisePropertyChanged("AdobeImageName");
             }
         }
@@ -74,6 +78,8 @@ namespace Imagediff
             set
             {
                 diff_image_name = value;
+                if (RightToggleButtonName == "Diff")
+                    RightImageName = diff_image_name;
                 RaisePropertyChanged("DiffImageName");
             }
         }
@@ -87,6 +93,10 @@ namespace Imagediff
             set
             {
                 ref_image_name = value;
+                if (LeftToggleButtonName == "Reference")
+                    LeftImageName = ref_image_name;
+                if (RightToggleButtonName == "Reference")
+                    RightImageName = ref_image_name;
                 RaisePropertyChanged("RefImageName");
             }
         }
