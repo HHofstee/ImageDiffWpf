@@ -16,8 +16,6 @@ namespace Imagediff
         private string adobe_image_name;
         private string diff_image_name;
         private string ref_image_name;
-        private string left_image_name;
-        private string right_image_name;
         private string left_toggle_button_name;
         private string right_toggle_button_name;
 
@@ -33,8 +31,6 @@ namespace Imagediff
             AdobeImageName = adobe_image_name;
             DiffImageName = diff_image_name;
             RefImageName = ref_image_name;
-            LeftImageName = image_name;
-            RightImageName = ref_image_name;
             LeftToggleButtonName = "Image";
             RightToggleButtonName = "Reference";
         }
@@ -49,8 +45,7 @@ namespace Imagediff
             {
                 image_name = value;
                 if (LeftToggleButtonName == "Image")
-                    LeftImageName = image_name;
-                RaisePropertyChanged("ImageName");
+                    RaisePropertyChanged("LeftImageName");
             }
         }
 
@@ -64,8 +59,7 @@ namespace Imagediff
             {
                 adobe_image_name = value;
                 if (RightToggleButtonName == "Adobe")
-                    RightImageName = adobe_image_name;
-                RaisePropertyChanged("AdobeImageName");
+                    RaisePropertyChanged("RightImageName");
             }
         }
 
@@ -79,8 +73,7 @@ namespace Imagediff
             {
                 diff_image_name = value;
                 if (RightToggleButtonName == "Diff")
-                    RightImageName = diff_image_name;
-                RaisePropertyChanged("DiffImageName");
+                    RaisePropertyChanged("RightImageName");
             }
         }
 
@@ -94,10 +87,9 @@ namespace Imagediff
             {
                 ref_image_name = value;
                 if (LeftToggleButtonName == "Reference")
-                    LeftImageName = ref_image_name;
+                    RaisePropertyChanged("LeftImageName");
                 if (RightToggleButtonName == "Reference")
-                    RightImageName = ref_image_name;
-                RaisePropertyChanged("RefImageName");
+                    RaisePropertyChanged("RightImageName");
             }
         }
 
@@ -105,12 +97,7 @@ namespace Imagediff
         {
             get
             {
-                return left_image_name;
-            }
-            set
-            {
-                left_image_name = value;
-                RaisePropertyChanged("LeftImageName");
+                return ConvertButtonNameToImageName(LeftToggleButtonName);
             }
         }
 
@@ -118,12 +105,7 @@ namespace Imagediff
         {
             get
             {
-                return right_image_name;
-            }
-            set
-            {
-                right_image_name = value;
-                RaisePropertyChanged("RightImageName");
+                return ConvertButtonNameToImageName(RightToggleButtonName);
             }
         }
 
@@ -131,12 +113,14 @@ namespace Imagediff
         {
             get
             {
+
                 return left_toggle_button_name;
             }
             set
             {
                 left_toggle_button_name = value;
                 RaisePropertyChanged("LeftToggleButtonName");
+                RaisePropertyChanged("LeftImageName");
             }
         }
 
@@ -150,6 +134,7 @@ namespace Imagediff
             {
                 right_toggle_button_name = value;
                 RaisePropertyChanged("RightToggleButtonName");
+                RaisePropertyChanged("RightImageName");
             }
         }
 
@@ -166,6 +151,22 @@ namespace Imagediff
             get
             {
                 return new ToggleCommand(this, "Right", new string[] {"Reference", "Diff", "Adobe"});
+            }
+        }
+
+        private string ConvertButtonNameToImageName(string button_name)
+        {
+            switch (button_name)
+            {
+                default:
+                case "Image":
+                    return ImageName;
+                case "Adobe":
+                    return AdobeImageName;
+                case "Diff":
+                    return DiffImageName;
+                case "Reference":
+                    return RefImageName;
             }
         }
     }
@@ -194,34 +195,11 @@ namespace Imagediff
         {
             string current_button_name = left_or_right == "Left" ? imagediff.LeftToggleButtonName : imagediff.RightToggleButtonName;
             int i = (Array.IndexOf(button_names, current_button_name) + 1) % button_names.Length;
-            string image_name = "";
-
-            switch (button_names[i])
-            {
-                case "Image":
-                    image_name = imagediff.ImageName;
-                    break;
-                case "Adobe":
-                    image_name = imagediff.AdobeImageName;
-                    break;
-                case "Diff":
-                    image_name = imagediff.DiffImageName;
-                    break;
-                case "Reference":
-                    image_name = imagediff.RefImageName;
-                    break;
-            }
 
             if (left_or_right == "Left")
-            {
                 imagediff.LeftToggleButtonName = button_names[i];
-                imagediff.LeftImageName = image_name;
-            }
             else
-            {
                 imagediff.RightToggleButtonName = button_names[i];
-                imagediff.RightImageName = image_name;
-            }
         }
     }
 }
